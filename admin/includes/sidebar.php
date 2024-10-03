@@ -25,21 +25,26 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
-            <a href="calendar" class="nav-link">
-              <i class="nav-icon fas fa-calendar"></i>
+            <a href="index" class="nav-link">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>Dashbaord</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="index" class="nav-link">
-              <i class="nav-icon fa fa-flag"></i>
+            <a href="user" class="nav-link">
+              <i class="nav-icon fa fa-users"></i>
               <p>Manage Users</p>
             </a>
           </li>
-          
           <li class="nav-item">
-            <a href="players" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
+            <a href="loan" class="nav-link">
+              <i class="nav-icon fa fa-credit-card"></i>
+              <p>Loans</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="report" class="nav-link">
+              <i class="nav-icon fas fa-clipboard"></i>
               <p>Reports</p>
             </a>
           </li>
