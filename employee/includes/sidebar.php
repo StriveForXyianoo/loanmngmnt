@@ -27,34 +27,23 @@
                <li class="nav-item">
             <a href="calendar" class="nav-link">
               <i class="nav-icon fas fa-calendar"></i>
-              <p>Games Year</p>
+              <p>Dashboard </p>
             </a>
           </li>
           <li class="nav-item">
             <a href="index" class="nav-link">
               <i class="nav-icon fa fa-flag"></i>
-              <p>School</p>
+              <p>Client Loan</p>
             </a>
           </li>
           
           <li class="nav-item">
             <a href="players" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
-              <p>Players</p>
+              <p>Reports</p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="sports" class="nav-link">
-              <i class="nav-icon fa fa-trophy"></i>
-              <p>Sports</p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="organizer" class="nav-link">
-              <i class="nav-icon fas fa-user"></i>
-              <p>Organizer</p>
-            </a>
-          </li>
+         
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
