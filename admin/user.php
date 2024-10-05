@@ -26,7 +26,29 @@ include 'includes/sidebar.php';
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-       
+        <div class="card card-outline card-warning">
+                <div class="card-header">
+                    <h3 class="card-title">Client Information</h3>
+                    <div class="card-tools">
+                      <button type="button" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#modal-default">
+                        Add Users
+                      </button>
+                    </div>
+                </div>
+                
+                <div class="card-body">
+                    <table class="table table-hover table-bordered table-stripped">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Role</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>
@@ -36,6 +58,7 @@ include 'includes/sidebar.php';
  
   
 <?php
+include 'modal.php';
 include 'includes/script.php';
 ?>
 

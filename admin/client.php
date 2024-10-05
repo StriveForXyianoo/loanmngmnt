@@ -10,12 +10,12 @@ include 'includes/sidebar.php';
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Loans  </h1>
+            <h1 class="m-0 text-dark">Manage Clients   </h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Loans</li>
+              <li class="breadcrumb-item active">Client Information</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -26,9 +26,9 @@ include 'includes/sidebar.php';
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-        <div class="card card-outline card-warning">
+            <div class="card card-outline card-warning">
                 <div class="card-header">
-                    <h3 class="card-title">Loan Information</h3>
+                    <h3 class="card-title">Client Information</h3>
                 </div>
                 <div class="card-body">
                     <table class="table table-hover table-bordered table-stripped">
@@ -37,9 +37,7 @@ include 'includes/sidebar.php';
                                 <th>Name</th>
                                 <th>Department</th>
                                 <th>Position</th>
-                                <th>Loan Type</th>
-                                <th>Amount</th>
-                                <th>Loan Status</th>
+                                <th>Client Status</th>
                                 <th>Action</th>
                             </tr>
                         </thead>

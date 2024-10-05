@@ -1,3 +1,4 @@
+
 </div>
 <!-- ./wrapper -->
 
@@ -11,6 +12,11 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="includes/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="includes/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- SweetAlert2 -->
+<script src="includes/assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+<!-- Toastr -->
+<script src="includes/assets/plugins/toastr/toastr.min.js"></script>
 <!-- ChartJS -->
 <script src="includes/assets/plugins/chart.js/Chart.min.js"></script>
 <!-- Sparkline -->
