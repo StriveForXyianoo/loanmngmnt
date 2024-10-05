@@ -31,6 +31,12 @@
             </a>
           </li>
           <li class="nav-item">
+            <a href="client" class="nav-link">
+              <i class="nav-icon fa fa-user"></i>
+              <p>Client Information</p>
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="user" class="nav-link">
               <i class="nav-icon fa fa-users"></i>
               <p>Manage Users</p>
