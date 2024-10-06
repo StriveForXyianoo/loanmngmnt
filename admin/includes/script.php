@@ -39,5 +39,32 @@
 <script src="includes/assets/dist/js/adminlte.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="includes/assets/dist/js/pages/dashboard.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="includes/assets/dist/js/demo.js"></script>
+
+<!-- DataTables -->
+<script src="includes/assets/plugins/datatables/jquery.dataTables.js"></script>
+<script src="includes/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<script>
+  $(function () {
+    $('#example1').DataTable({
+      "paging": true,
+      "lengthChange": true,
+      "searching": true,
+      "ordering": true,
+      "info": true,
+      "autoWidth": true,
+      "lengthMenu": [ [5, 10, 25, 50, -1], [5, 10, 25, 50, "All"] ],
+      //search box size and position
+      "search": {
+        "placeholder": "Search...",
+        "className": "form-control-sm form-control",
+      
+      }
+      
+      
+
+    });
+    $('#example1_filter input')
+        .attr('placeholder', 'Search...')
+        .addClass('form-control-sm form-control'); 
+  });
+</script>

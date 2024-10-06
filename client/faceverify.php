@@ -18,12 +18,11 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <style>
-    body {
-      background-image: url('admin/includes/assets/dist/img/logo.jpg');
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-size: cover;
-    }
+   .camera{
+    width: 100%;
+    height: 100%;
+   }
+
   </style>
 </head>
 <body class="hold-transition login-page">
@@ -37,43 +36,21 @@
       <p class="login-box-msg">Sign in to start your session</p>
 
       <form action="admin/includes/assets/index3.html" method="post">
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
-        </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
-            </div>
-          </div>
-        </div>
+       <div class="camera"></div>
         <div class="row">
           <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
-            </div>
+           
           </div>
           <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-warning btn-block">Sign In</button>
-          </div>
+          
           <!-- /.col -->
         </div>
       </form>
 
       <div class="social-auth-links text-center mb-3">
         <p>- OR -</p>
-        <a onclick="checkcamera()" class="btn btn-block btn-warning">
-          <i class="fa fa-camera mr-2"></i> Sign in using Face Recognition
+        <a href="index" class="btn btn-block btn-warning">
+          <i class="fa fa-key mr-2"></i> Sign in using Email and Password
         </a>
         
       </div>
@@ -96,14 +73,35 @@
 <!-- AdminLTE App -->
 <script src="admin/includes/assets/dist/js/adminlte.min.js"></script>
 <script>
-    //check if the machine has a camera
-    function checkcamera(){
-        if (navigator.mediaDevices.getUserMedia) {
-            window.location.href = 'faceverify';
-        } else {
-            alert('Camera is not available');
-        }
+ // Wait for the DOM to load
+document.addEventListener("DOMContentLoaded", function() {
+    const cameraDiv = document.querySelector('.camera');  // Get the camera div
+
+    // Check for camera availability
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Try to access the camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function(stream) {
+                // Create a video element to display the camera feed
+                const video = document.createElement('video');
+                video.srcObject = stream;
+                video.autoplay = true;
+                video.style.width = "100%"; // Set video width to 100% of the parent div
+                video.style.height = "100%"; // Set video height to 100% of the parent div
+                cameraDiv.appendChild(video); // Append the video element to the camera div
+            })
+            .catch(function(error) {
+                // If there's an error accessing the camera
+                alert("No camera support detected.");
+                window.location.href = 'index.html';  // Redirect to index page
+            });
+    } else {
+        // If the browser does not support camera access
+        alert("No camera support detected.");
+        window.location.href = 'index.html';  // Redirect to index page
     }
+});
+
 </script>
 </body>
 </html>

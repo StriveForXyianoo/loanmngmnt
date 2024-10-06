@@ -37,7 +37,7 @@ include 'includes/sidebar.php';
                 </div>
                 
                 <div class="card-body">
-                    <table class="table table-hover table-bordered table-stripped">
+                    <table class="table table-hover table-bordered table-stripped" id="example1">
                         <thead>
                             <tr>
                                 <th>Name</th>

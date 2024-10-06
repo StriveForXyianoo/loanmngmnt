@@ -31,7 +31,7 @@ include 'includes/sidebar.php';
                     <h3 class="card-title">Loan Information</h3>
                 </div>
                 <div class="card-body">
-                    <table class="table table-hover table-bordered table-stripped">
+                    <table class="table table-hover table-bordered table-stripped" id="example1">
                         <thead>
                             <tr>
                                 <th>Name</th>

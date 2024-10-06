@@ -30,6 +30,8 @@
     <link rel="stylesheet" href="includes/assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css">
   <!-- Toastr -->
   <link rel="stylesheet" href="includes/assets/plugins/toastr/toastr.min.css">
+   <!-- DataTables -->
+   <link rel="stylesheet" href="includes/assets/plugins/datatables-bs4/css/dataTables.bootstrap4.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
