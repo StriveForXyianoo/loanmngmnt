@@ -26,7 +26,32 @@ include 'includes/sidebar.php';
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-       
+         <div class="row">
+          <div class="col-lg-4 col-sm-12 col-md-12">
+            <div class="card card-outline card-primary">
+              <div class="card-header">
+                <h3 class="card-title text-center">Pending Loan</h3>
+              </div>
+              <div class="card-body">
+                
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-12 col-md-12">
+            <div class="card card-outline card-warning">
+              <div class="card-header">
+                <h3 class="card-title text-center">Approved Loan</h3>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-4 col-sm-12 col-md-12">
+            <div class="card card-outline card-success">
+              <div class="card-header">
+                <h3 class="card-title text-center">Done/Decline Loan</h3>
+              </div>
+            </div>
+          </div>
+         </div>
         </div>
       </div><!-- /.container-fluid -->
     </section>

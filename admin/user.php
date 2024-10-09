@@ -46,6 +46,29 @@ include 'includes/sidebar.php';
                                 <th>Action</th>
                             </tr>
                         </thead>
+                        <tbody>
+                          <?php
+                          $sql = "SELECT * FROM users";
+                          $result = $conn->query($sql);
+                          foreach($result as $row){
+                            if($row['MIDDLENAME']==''){
+                              $name = $row['LASTNAME'].', '.$row['FIRSTNAME'];
+                            }else{
+                              $name = $row['LASTNAME'].', '.$row['FIRSTNAME'].' '.$row['MIDDLENAME'];
+                            }
+                            ?>
+                            <tr>
+                              <td><?php echo $name; ?></td>
+                              <td><?php echo $row['EMAILADDRESS']; ?></td>
+                              <td><?php echo $row['ROLES']; ?></td>
+                              <td>
+                               <button class="btn btn-danger btn-sm" onclick="uDelete(<?php echo $row['ID']; ?>)">Delete</button>
+                              </td>
+                            </tr>
+                            <?php
+                          }
+                          ?>
+                        </tbody>
                     </table>
                 </div>
             </div>
@@ -61,7 +84,48 @@ include 'includes/sidebar.php';
 include 'modal.php';
 include 'includes/script.php';
 ?>
-
+<script>
+  function uDelete(user){
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You want to delete this data?",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        //goto delete.php
+        $.ajax({
+          type: "POST",
+          url: "controllers/delete.php",
+          data: {
+            user: user
+          },
+          success: function(data) {
+            if (data == "success") {
+              Swal.fire(
+                'Deleted! ',
+                'Your file has been deleted.',
+                'success'
+              )
+              setTimeout(() => {
+                location.reload();
+              }, 1000);
+            } else {
+              Swal.fire(
+                'Error!',
+                'There was an error deleting your file.',
+                'error'
+              )
+            }
+          }
+        });
+      }
+    });
+  }
+</script>
 <?php
 include 'includes/footer.php';
 ?>

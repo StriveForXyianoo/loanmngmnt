@@ -25,15 +25,15 @@
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
                <li class="nav-item">
-            <a href="calendar" class="nav-link">
+            <a href="index" class="nav-link">
               <i class="nav-icon fas fa-calendar"></i>
               <p>Dashboard</p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="index" class="nav-link">
+            <a href="applyloan" class="nav-link">
               <i class="nav-icon fa fa-flag"></i>
-              <p>Loan</p>
+              <p>Apply Loan</p>
             </a>
           </li>
         </ul>

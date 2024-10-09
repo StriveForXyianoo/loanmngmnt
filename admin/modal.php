@@ -8,7 +8,7 @@
               </button>
             </div>
             <div class="modal-body">
-              <form action="" method="post" autocomplete="OFF">
+              <form action="controllers/addcontrollers.php" method="post" autocomplete="OFF">
                 <div class="form-group mb-2">
                   <label for="lastname">Last Name</label>
                   <input type="text" name="lastname" id="lastname" class="form-control" required>
@@ -38,11 +38,11 @@
                 </div>
                  
                 
-              </form>
+              
             </div>
             <div class="modal-footer justify-content-between">
               <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-              <button type="button" class="btn btn-primary">Save user</button>
+              <button type="submit" name="user" class="btn btn-primary">Save user</button></form>
             </div>
           </div>
           <!-- /.modal-content -->
