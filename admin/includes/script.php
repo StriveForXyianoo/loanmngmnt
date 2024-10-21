@@ -43,6 +43,7 @@
 <!-- DataTables -->
 <script src="includes/assets/plugins/datatables/jquery.dataTables.js"></script>
 <script src="includes/assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   $(function () {
     $('#example1').DataTable({
@@ -68,3 +69,35 @@
         .addClass('form-control-sm form-control'); 
   });
 </script>
+<?php
+if (isset($_SESSION['msgstatus'])) {
+  if ($_SESSION['msgstatus'] == 'success') {
+    ?>
+    <script>
+      $(document).ready(function() {
+        Swal.fire({
+          title: 'Success',
+          text: '<?php echo addslashes($_SESSION['msg']); ?>', // Wrapped in quotes and escaped
+          icon: 'success',
+          confirmButtonText: 'Ok'
+        });
+      });
+    </script>
+    <?php
+  } else {
+    ?>
+    <script>
+      $(document).ready(function() {
+        Swal.fire({
+          title: 'Error',
+          text: '<?php echo addslashes($_SESSION['msg']); ?>', // Wrapped in quotes and escaped
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      });
+    </script>
+    <?php
+  }
+  unset($_SESSION['msgstatus']);
+}
+?>  

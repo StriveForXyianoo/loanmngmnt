@@ -72,36 +72,6 @@
 <script src="admin/includes/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="admin/includes/assets/dist/js/adminlte.min.js"></script>
-<script>
- // Wait for the DOM to load
-document.addEventListener("DOMContentLoaded", function() {
-    const cameraDiv = document.querySelector('.camera');  // Get the camera div
 
-    // Check for camera availability
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        // Try to access the camera
-        navigator.mediaDevices.getUserMedia({ video: true })
-            .then(function(stream) {
-                // Create a video element to display the camera feed
-                const video = document.createElement('video');
-                video.srcObject = stream;
-                video.autoplay = true;
-                video.style.width = "100%"; // Set video width to 100% of the parent div
-                video.style.height = "100%"; // Set video height to 100% of the parent div
-                cameraDiv.appendChild(video); // Append the video element to the camera div
-            })
-            .catch(function(error) {
-                // If there's an error accessing the camera
-                alert("No camera support detected.");
-                window.location.href = 'index.html';  // Redirect to index page
-            });
-    } else {
-        // If the browser does not support camera access
-        alert("No camera support detected.");
-        window.location.href = 'index.html';  // Redirect to index page
-    }
-});
-
-</script>
 </body>
 </html>

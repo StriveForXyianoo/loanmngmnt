@@ -1,109 +1,112 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Log in</title>
-  <!-- Tell the browser to be responsive to screen width -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="admin/includes/assets/plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="admin/includes/assets/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="admin/includes/assets/dist/css/adminlte.min.css">
-  <!-- Google Font: Source Sans Pro -->
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-  <style>
-    body {
-      background-image: url('admin/includes/assets/dist/img/logo.jpg');
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      background-size: cover;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BGEMPC Multi-Coop Loan System</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 </head>
-<body class="hold-transition login-page">
-<div class="login-box">
-  <div class="login-logo">
-    <a href="admin/includes/assets/index2.html"><b>BCGEMPPC</b></a>
-  </div>
-  <!-- /.login-logo -->
-  <div class="card">
-    <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+<body>
 
-      <form action="admin/includes/assets/index3.html" method="post">
-        <div class="input-group mb-3">
-          <input type="email" class="form-control" placeholder="Email">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-envelope"></span>
-            </div>
-          </div>
+
+    <!-- Sticky Navbar with Professional Design -->
+    <header>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="logo">
+            <a href="index.php">
+                <div class="logo-container" style="display: flex; align-items: center;">
+                    <img src="1BGC.jpg" alt="BCGEMPC Logo" style="height: 50px;">
+                    <span style="margin-left: 10px;">BGEMPC</span>
+                </div>
+            </a>
         </div>
-        <div class="input-group mb-3">
-          <input type="password" class="form-control" placeholder="Password">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-lock"></span>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="javascript:void(0)" class="btn-nav" onclick="redirectToLogin()">Get Started</a></li>
+            </ul>
+            <div class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
-          </div>
+        </nav>
+    </header>
+
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Welcome to BGEMPC Coop Loan Management</h1>
+            <hr>
+            <p>Empowering your financial growth with easy loan management and personalized solutions.</p>
         </div>
-        <div class="row">
-          <div class="col-8">
-            <div class="icheck-primary">
-              <input type="checkbox" id="remember">
-              <label for="remember">
-                Remember Me
-              </label>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="about-us">
+        <h2>About Us</h2>
+        <p>We are a member-driven cooperative offering secure and accessible loans for both personal and business purposes.</p>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <h2>Our Services</h2>
+        <div class="service-cards">
+            <div class="card">
+                <h3>Personal Loans</h3>
+                <p>Flexible and quick loans for individual needs.</p>
             </div>
-          </div>
-          <!-- /.col -->
-          <div class="col-4">
-            <button type="submit" class="btn btn-warning btn-block">Sign In</button>
-          </div>
-          <!-- /.col -->
+            <div class="card">
+                <h3>Business Loans</h3>
+                <p>Supporting your business with competitive rates and easy repayment plans.</p>
+            </div>
+            <div class="card">
+                <h3>Loan Management</h3>
+                <p>Track and manage your loans effortlessly through our platform.</p>
+            </div>
         </div>
-      </form>
+    </section>
 
-      <div class="social-auth-links text-center mb-3">
-        <p>- OR -</p>
-        <a onclick="checkcamera()" class="btn btn-block btn-warning">
-          <i class="fa fa-camera mr-2"></i> Sign in using Face Recognition
-        </a>
-        
-      </div>
-      <!-- /.social-auth-links -->
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+        <h2>What Our Members Say</h2>
+        <div class="testimonial-cards">
+            <?php 
+                // Dynamically load testimonials from database (replace with DB logic)
+                $testimonials = [
+                    ["quote" => "CoopLoans has been a game-changer for my business.", "name" => "John Doe"],
+                    ["quote" => "The personalized service made managing my loans easier.", "name" => "Jane Smith"]
+                ];
+                foreach ($testimonials as $testimonial) {
+                    echo "<div class='testimonial'>
+                            <p>\"{$testimonial['quote']}\"</p>
+                            <h4>- {$testimonial['name']}</h4>
+                        </div>";
+                }
+            ?>
+        </div>
+    </section>
 
-      
-      <p class="mb-0">
-        <a href="registration" class="text-center" >Register a new membership</a>
-      </p>
-    </div>
-    <!-- /.login-card-body -->
-  </div>
-</div>
-<!-- /.login-box -->
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2024 Coop Loan Management. All rights reserved.</p>
+    </footer>
 
-<!-- jQuery -->
-<script src="admin/includes/assets/plugins/jquery/jquery.min.js"></script>
-<!-- Bootstrap 4 -->
-<script src="admin/includes/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- AdminLTE App -->
-<script src="admin/includes/assets/dist/js/adminlte.min.js"></script>
-<script>
-    //check if the machine has a camera
-    function checkcamera(){
-        if (navigator.mediaDevices.getUserMedia) {
-            window.location.href = 'faceverify';
-        } else {
-            alert('Camera is not available');
-        }
+    <script src="script.js"></script>
+    <script>
+// Listen for keydown event
+document.addEventListener('keydown', function(event) {
+    // Check if 'Ctrl' and 'Alt' are pressed, along with the 'B' key
+    if (event.ctrlKey && event.altKey && event.key === 'b') {
+        // Redirect to adminlogin.php
+        window.location.href = 'adminlogin.php';
     }
+});
 </script>
+
 </body>
 </html>

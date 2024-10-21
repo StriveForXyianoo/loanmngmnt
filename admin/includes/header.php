@@ -1,3 +1,7 @@
+<?php
+session_start();
+include '../controllers/connections.php';
+?>
 <!DOCTYPE html>
 <html>
 <head>
