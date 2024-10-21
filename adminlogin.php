@@ -18,47 +18,65 @@
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
   <style>
-   .camera{
-    width: 100%;
-    height: 100%;
-   }
-
+    body {
+      background-image: url('admin/includes/assets/dist/img/logo.jpg');
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-size: cover;
+    }
   </style>
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="admin/includes/assets/index2.html"><b>BCGEMPPC</b></a>
+    <a href="admin/includes/assets/index2.html"><b>BCGEMPPC ADMIN/EMPLOYEE</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
       <p class="login-box-msg">Sign in to start your session</p>
 
-      <form action="admin/includes/assets/index3.html" method="post">
-       <div class="camera"></div>
+      <form action="controllers/login.php" method="post">
+        <div class="input-group mb-3">
+          <input type="email" name="email" class="form-control" placeholder="Email">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-envelope"></span>
+            </div>
+          </div>
+        </div>
+        <div class="input-group mb-3">
+          <input type="password" name="password" class="form-control" placeholder="Password">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-lock"></span>
+            </div>
+          </div>
+        </div>
         <div class="row">
           <div class="col-8">
-           
+            
           </div>
           <!-- /.col -->
-          
+          <div class="col-4">
+            <button type="submit" name="signin" class="btn btn-warning btn-block">Sign In</button>
+          </div>
           <!-- /.col -->
         </div>
       </form>
 
-      <div class="social-auth-links text-center mb-3">
+      <!-- <div class="social-auth-links text-center mb-3">
         <p>- OR -</p>
-        <a href="index" class="btn btn-block btn-warning">
-          <i class="fa fa-key mr-2"></i> Sign in using Email and Password
+        <a onclick="checkcamera()" class="btn btn-block btn-warning">
+          <i class="fa fa-camera mr-2"></i> Sign in using Face Recognition
         </a>
         
-      </div>
+      </div> -->
       <!-- /.social-auth-links -->
 
       
       <p class="mb-0">
-        <a href="registration" class="text-center" >Register a new membership</a>
+        
       </p>
     </div>
     <!-- /.login-card-body -->
@@ -72,6 +90,15 @@
 <script src="admin/includes/assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="admin/includes/assets/dist/js/adminlte.min.js"></script>
-
+<script>
+    //check if the machine has a camera
+    function checkcamera(){
+        if (navigator.mediaDevices.getUserMedia) {
+            window.location.href = 'faceverify';
+        } else {
+            alert('Camera is not available');
+        }
+    }
+</script>
 </body>
 </html>

@@ -1,3 +1,19 @@
+<?php
+session_start();
+include '../controllers/connections.php';
+if(!isset($_SESSION['role'])){
+    header('location: ../index');
+}
+if($_SESSION['role'] != 'client'){
+    header('location: ../admin/');
+}
+$id = $_SESSION['id'];
+$capturesql = "SELECT * FROM clientimage WHERE CLIENT_ID = '$id' AND `TYPE` = 'USERPIC'";
+$captureresult = mysqli_query($conn, $capturesql);
+$capturerow = mysqli_fetch_assoc($captureresult);
+
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
