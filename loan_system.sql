@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 05, 2024 at 05:16 AM
+-- Generation Time: Oct 21, 2024 at 04:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -37,6 +37,19 @@ CREATE TABLE `clientbeneficiary` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `clientimage`
+--
+
+CREATE TABLE `clientimage` (
+  `ID` int(11) NOT NULL,
+  `CLIENT_ID` int(11) NOT NULL,
+  `TYPE` enum('VALIDID','USERPIC') NOT NULL,
+  `FILEP` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `clientinformation`
 --
 
@@ -53,7 +66,9 @@ CREATE TABLE `clientinformation` (
   `SALARY` varchar(255) NOT NULL,
   `ADDRESS` text NOT NULL,
   `YEARS` varchar(255) NOT NULL,
-  `DEPARTMENT` varchar(255) NOT NULL
+  `DEPARTMENT` varchar(255) NOT NULL,
+  `EMAIL` varchar(200) NOT NULL,
+  `PASSWORD` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -83,24 +98,10 @@ CREATE TABLE `clientloan` (
 CREATE TABLE `loantype` (
   `ID` int(11) NOT NULL,
   `TPID` enum('Regular Loan','Special Loan') NOT NULL,
-  `LOANTYPE` varchar(255) NOT NULL
+  `LOANTYPE` varchar(255) NOT NULL,
+  `MINAM` varchar(255) NOT NULL,
+  `MAXAM` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `loantype`
---
-
-INSERT INTO `loantype` (`ID`, `TPID`, `LOANTYPE`) VALUES
-(1, 'Regular Loan', 'Salary Loan'),
-(2, 'Regular Loan', 'Emergency Loan'),
-(3, 'Regular Loan', 'Appliance Loan'),
-(4, 'Regular Loan', 'Motorcycle Loan'),
-(5, 'Regular Loan', 'Rice Loan'),
-(6, 'Special Loan', 'MID Year Bonus'),
-(7, 'Special Loan', 'Year End Bonus'),
-(8, 'Special Loan', 'Cash Gift'),
-(9, 'Special Loan', 'Clothing'),
-(10, 'Special Loan', 'Extra Bonus');
 
 -- --------------------------------------------------------
 
@@ -143,6 +144,13 @@ CREATE TABLE `users` (
 ALTER TABLE `clientbeneficiary`
   ADD PRIMARY KEY (`ID`),
   ADD KEY `CLIENTID` (`CLIENTID`);
+
+--
+-- Indexes for table `clientimage`
+--
+ALTER TABLE `clientimage`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `CLIENT_ID` (`CLIENT_ID`);
 
 --
 -- Indexes for table `clientinformation`
@@ -189,6 +197,12 @@ ALTER TABLE `clientbeneficiary`
   MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `clientimage`
+--
+ALTER TABLE `clientimage`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `clientinformation`
 --
 ALTER TABLE `clientinformation`
@@ -204,7 +218,7 @@ ALTER TABLE `clientloan`
 -- AUTO_INCREMENT for table `loantype`
 --
 ALTER TABLE `loantype`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `paymentloan`
