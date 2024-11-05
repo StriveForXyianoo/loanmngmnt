@@ -42,11 +42,17 @@ include 'includes/sidebar.php';
                     ?>
                      <div class="card card-secondary">
                         <div class="card-header">
-                          <h3 class="card-title"><?php echo $plrow["LOANID"]?></h3>
+                          <h3 class="card-title"><?php $loanID= $plrow["LOANID"];
+                          $lisql = "SELECT * FROM loantype WHERE ID = '$loanID'";
+                          $liresult = mysqli_query($conn, $lisql);
+                          $lirow = mysqli_fetch_assoc($liresult);
+                          echo $lirow["LOANTYPE"]
+
+                          ?></h3>
                         </div>
                         <div class="card-body">
-                          <h6><?php echo $plrow["LOANAMOUNT"]?></h6>
-                          <p><?php echo $plrow["LOANDATE"]?></p>
+                          <h6><?php echo "₱".number_format($plrow["LOANAMOUNT"],2,".",",")?></h6>
+                          <p><?php echo date('F j, Y', strtotime($plrow["LOANDATE"]));?></p>
                           <p class="text-danger"><?php echo $plrow["STATUS"]?></p>
                           <button class="btn btn-sm btn-info">View</button>
                           <button class="btn btn-sm btn-danger">Cancel</button>
@@ -68,12 +74,84 @@ include 'includes/sidebar.php';
               <div class="card-header">
                 <h3 class="card-title text-center">Approved Loan</h3>
               </div>
+              <div class="card-body">
+              
+              <?php
+                $clientid = $_SESSION['id'];
+                $plsql = "SELECT * FROM clientloan WHERE CLIENTID = '$clientid' AND STATUS = 'APPROVED'";
+                $plresult = mysqli_query($conn, $plsql);
+                if(mysqli_num_rows($plresult) > 0) {
+                  foreach($plresult as $plrow){
+                    ?>
+                     <div class="card card-secondary">
+                        <div class="card-header">
+                          <h3 class="card-title"><?php $loanID= $plrow["LOANID"];
+                          $lisql = "SELECT * FROM loantype WHERE ID = '$loanID'";
+                          $liresult = mysqli_query($conn, $lisql);
+                          $lirow = mysqli_fetch_assoc($liresult);
+                          echo $lirow["LOANTYPE"]
+
+                          ?></h3>
+                        </div>
+                        <div class="card-body">
+                          <h6><?php echo "₱".number_format($plrow["LOANAMOUNT"],2,".",",")?></h6>
+                          <p><?php echo date('F j, Y', strtotime($plrow["LOANDATE"]));?></p>
+                          <p class="text-danger"><?php echo $plrow["STATUS"]?></p>
+                          <button class="btn btn-sm btn-info">View</button>
+                          <button class="btn btn-sm btn-danger">Cancel</button>
+                        </div>
+                      </div>
+
+                    <?php
+                  }
+                }else{
+                  echo "<p class='text-center text-danger'>No Pending Loan</p>";
+                }
+                ?>
+
+              </div>
             </div>
           </div>
           <div class="col-lg-4 col-sm-12 col-md-12">
             <div class="card card-outline card-success">
               <div class="card-header">
                 <h3 class="card-title text-center">Done/Decline Loan</h3>
+              </div>
+              <div class="card-body">
+
+              <?php
+                $clientid = $_SESSION['id'];
+                $plsql = "SELECT * FROM clientloan WHERE CLIENTID = '$clientid' AND STATUS = 'DONE' OR STATUS = 'DECLINED'";
+                $plresult = mysqli_query($conn, $plsql);
+                if(mysqli_num_rows($plresult) > 0) {
+                  foreach($plresult as $plrow){
+                    ?>
+                     <div class="card card-secondary">
+                        <div class="card-header">
+                          <h3 class="card-title"><?php $loanID= $plrow["LOANID"];
+                          $lisql = "SELECT * FROM loantype WHERE ID = '$loanID'";
+                          $liresult = mysqli_query($conn, $lisql);
+                          $lirow = mysqli_fetch_assoc($liresult);
+                          echo $lirow["LOANTYPE"]
+
+                          ?></h3>
+                        </div>
+                        <div class="card-body">
+                          <h6><?php echo "₱".number_format($plrow["LOANAMOUNT"],2,".",",")?></h6>
+                          <p><?php echo date('F j, Y', strtotime($plrow["LOANDATE"]));?></p>
+                          <p class="text-danger"><?php echo $plrow["STATUS"]?></p>
+                          <button class="btn btn-sm btn-info">View</button>
+                          <button class="btn btn-sm btn-danger">Cancel</button>
+                        </div>
+                      </div>
+
+                    <?php
+                  }
+                }else{
+                  echo "<p class='text-center text-danger'>No Pending Loan</p>";
+                }
+                ?>
+
               </div>
             </div>
           </div>
