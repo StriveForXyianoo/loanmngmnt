@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -53,6 +56,25 @@
             </div>
           </div>
         </div>
+        <?php
+        if(isset($_SESSION['status'])){
+          if($_SESSION['status']=='success'){
+            ?>
+            <div class="alert alert-success" role="alert">
+              <?php echo $_SESSION['message']?>
+            </div>
+            <?php
+          }else{
+            ?>
+            <div class="alert alert-danger" role="alert">
+            <?php echo $_SESSION['message']?>
+            </div>
+            <?php
+          }
+          unset($_SESSION['message']);
+          unset($_SESSION['status']);
+        }
+        ?>
         <div class="row">
           <div class="col-8">
             

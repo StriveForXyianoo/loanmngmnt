@@ -1,5 +1,6 @@
 <?php
 include 'connections.php';
+session_start();
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
@@ -28,8 +29,9 @@ if(isset($_POST['register'])){
     $sql = "SELECT * FROM clientinformation WHERE EMAIL = '$email'";
     $result = mysqli_query($conn, $sql);
     if(mysqli_num_rows($result) > 0){
-        echo "<script>alert('Email already exist!')</script>";
-        echo "<script>window.location.href='index'</script>";
+        $_SESSION['status'] = "error";
+        $_SESSION['message'] = "Email already Exists";
+        header('Location: ../login');
     }else{
        //generate 10 random characters
         $docname = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
@@ -64,7 +66,7 @@ if(isset($_POST['register'])){
                 $sql3 = "INSERT INTO `clientimage`(`ID`, `CLIENT_ID`, `TYPE`, `FILEP`) VALUES (NULL, '$last_id', 'USERPIC', '$capname')";
                 $result3 = mysqli_query($conn, $sql3);
                 if($result2 && $result3){
-                    echo "<script>alert('Successfully registered! For Verification You will recieve your password on you email')</script>";
+                   
                     $mail = new PHPMailer(true);
                     try {
                         //Server settings
@@ -86,29 +88,38 @@ if(isset($_POST['register'])){
                         $mail->Subject = $subject;
                         $mail->Body    = $body;
                         $mail->send();
-
+                        $_SESSION['status'] = "success";
+                        $_SESSION['message'] = "Successfully Registered! Password Sent to your email";
+                        
                     } catch (\Throwable $e) {
-                        echo "<script>alert('Failed to send email')</script>";
+                       $_SESSION['status'] = "error";
+                       $_SESSION['message'] = "Sending Email Failed". $e;
+                       header('Location: ../login');
                     }
-                    echo "<script>window.location.href='index'</script>";
+                    
                 }else{
-                    echo "<script>alert('Failed to register')</script>";
-                    echo "<script>window.location.href='index'</script>";
+                        $_SESSION['status'] = "error";
+                       $_SESSION['message'] = "Failed to Register";
+                       header('Location: ../login');
+                    
                 }
             }else{
-                echo "<script>alert('Failed to register')</script>";
-                echo "<script>window.location.href='index'</script>";
+                $_SESSION['status'] = "error";
+                $_SESSION['message'] = "Failed to Register";
+                header('Location: ../login');
+               
             }
         }else{
-            echo "<script>alert('Failed to upload file')</script>";
-            echo "<script>window.location.href='index'</script>";
+            $_SESSION['status'] = "error";
+            $_SESSION['message'] = "Failed to Upload File";
+            header('Location: ../login');
         }
 
         
 
 
     }
-    
+    header('Location: ../login');
 }
 // // Replace with your actual API key and secret
 // $api_key = '_8ogNvyuQz22RwkuCQ_OF2dlbcaf-EtI';

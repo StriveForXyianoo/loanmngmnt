@@ -12,6 +12,14 @@ if(isset($_POST["applyloan"])){
     $insurance = $_POST["insurance"];
     $netpro = $_POST["netpro"];
 
+    $bsql = "SELECT * FROM clientbeneficiary WHERE CLIENTID='$clientID'";
+    $bresult = mysqli_query($conn,$bsql);
+    if(mysqli_num_rows($bresult) <= 0){
+        echo "<script>alert('Please Fill out the Beneficiary Form')</script>";
+        echo "<script>window.location.href='../bene'</script>";
+        exit();
+    }
+
     //check if there a pending loan and ongoing loan
     $sql = "SELECT * FROM clientloan WHERE CLIENTID = '$clientID' AND STATUS = 'PENDING' OR STATUS = 'ONGOING'";
     $result = mysqli_query($conn, $sql);
