@@ -43,7 +43,14 @@ include 'includes/sidebar.php';
                                 <th>Name</th>
                                 <th>Email</th>
                                 <th>Role</th>
-                                <th>Action</th>
+                                <?php
+                                if($_SESSION['role']=='ADMIN'){
+                                  ?>
+                                  <th>Action</th>
+                                  <?php
+                                }
+                                ?>
+                                
                             </tr>
                         </thead>
                         <tbody>
@@ -61,9 +68,16 @@ include 'includes/sidebar.php';
                               <td><?php echo $name; ?></td>
                               <td><?php echo $row['EMAILADDRESS']; ?></td>
                               <td><?php echo $row['ROLES']; ?></td>
-                              <td>
-                               <button class="btn btn-danger btn-sm" onclick="uDelete(<?php echo $row['ID']; ?>)">Delete</button>
-                              </td>
+                              <?php
+                                if($_SESSION['role']=='ADMIN'){
+                                  ?>
+                                  <td>
+                                    <button class="btn btn-danger btn-sm" onclick="uDelete(<?php echo $row['ID']; ?>)">Delete</button>
+                                  </td>
+                                  <?php
+                                }
+                              ?>
+                              
                             </tr>
                             <?php
                           }

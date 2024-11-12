@@ -56,7 +56,7 @@ if(isset($_POST['register'])){
 
 
         if(move_uploaded_file($_FILES['documentphoto']['tmp_name'], $target_doc) && move_uploaded_file($_FILES['capture']['tmp_name'], $target_cap)){
-            $sql = "INSERT INTO `clientinformation`(`ID`, `FIRSTNAME`, `MIDDLENAME`, `LASTNAME`, `GENDER`, `BIRTHDATE`, `CIVILSTATUS`, `CONTACTNO`, `POSITION`, `SALARY`, `ADDRESS`, `YEARS`, `DEPARTMENT`, `EMAIL`,`PASSWORD`) VALUES (NULL, '$fname', '$mname', '$lname', '$gender', '$bdate', '$civilstatus', '$phone', '$position', '$salary', '$address', '$years', '$department', '$email', '$password')";
+            $sql = "INSERT INTO `clientinformation`(`ID`, `FIRSTNAME`, `MIDDLENAME`, `LASTNAME`, `GENDER`, `BIRTHDATE`, `CIVILSTATUS`, `CONTACTNO`, `POSITION`, `SALARY`, `ADDRESS`, `YEARS`, `DEPARTMENT`, `EMAIL`,`PASSWORD`,`REGISTRATIONSTATUS`) VALUES (NULL, '$fname', '$mname', '$lname', '$gender', '$bdate', '$civilstatus', '$phone', '$position', '$salary', '$address', '$years', '$department', '$email', '$password','PENDING')";
             $result = mysqli_query($conn, $sql);
             if($result){
                 //get the last ID inserted

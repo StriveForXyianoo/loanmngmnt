@@ -1,9 +1,12 @@
+<?php
+session_start();
+?>
 <!DOCTYPE html>
 <html>
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>AdminLTE 3 | Log in</title>
+  <title>BCGEMPPC | Log in</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -29,14 +32,14 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="admin/includes/assets/index2.html"><b>BCGEMPPC ADMIN/EMPLOYEE</b></a>
+    <a href="admin/includes/assets/index2.html"><b>BCGEMPPC</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="card">
     <div class="card-body login-card-body">
-      <p class="login-box-msg">Sign in to start your session</p>
+      <p class="login-box-msg">Sign in as Admin/Employee to start your session</p>
 
-      <form action="controllers/login.php" method="post">
+      <form action="controllers/adminlogin.php" method="post">
         <div class="input-group mb-3">
           <input type="email" name="email" class="form-control" placeholder="Email">
           <div class="input-group-append">
@@ -53,6 +56,25 @@
             </div>
           </div>
         </div>
+        <?php
+        if(isset($_SESSION['status'])){
+          if($_SESSION['status']=='success'){
+            ?>
+            <div class="alert alert-success" role="alert">
+              <?php echo $_SESSION['message']?>
+            </div>
+            <?php
+          }else{
+            ?>
+            <div class="alert alert-danger" role="alert">
+            <?php echo $_SESSION['message']?>
+            </div>
+            <?php
+          }
+          unset($_SESSION['message']);
+          unset($_SESSION['status']);
+        }
+        ?>
         <div class="row">
           <div class="col-8">
             
@@ -76,7 +98,7 @@
 
       
       <p class="mb-0">
-        
+        <a href="registration" class="text-center" >Register a new membership</a>
       </p>
     </div>
     <!-- /.login-card-body -->

@@ -123,7 +123,22 @@ include 'includes/sidebar.php';
                           <td id="monthly"></td>
                         </tr>
                         <tr>
-                          <form action="controllers/applyloan" method="post">
+                          <!-- <form action="controllers/applyloan" method="post">
+                            <input type="hidden" name="clientID" value="">
+                            <input type="hidden" name="loanID" id="loannameID">
+                            <input type="hidden" name="amount" id="loanamount">
+                            <input type="hidden" name="term" id="loanterm">
+                            <input type="hidden" name="interest" id="loaninterest">
+                            <input type="hidden" name="service" id="loanservice">
+                            <input type="hidden" name="cbu" id="loancbu">
+                            <input type="hidden" name="filling" id="loanfilling">
+                            <input type="hidden" name="insurance" id="loaninsurance">
+                            <input type="hidden" name="netpro" id="loannetpro">
+                            <td colspan="2">
+                            <button  id="applyLoanButton" class="btn btn-sm btn-warning float-right">Submit Application</button>
+                          </td>
+                          </form> -->
+                          <form id="loanForm">
                             <input type="hidden" name="clientID" value="<?=$_SESSION['id']?>">
                             <input type="hidden" name="loanID" id="loannameID">
                             <input type="hidden" name="amount" id="loanamount">
@@ -135,9 +150,10 @@ include 'includes/sidebar.php';
                             <input type="hidden" name="insurance" id="loaninsurance">
                             <input type="hidden" name="netpro" id="loannetpro">
                             <td colspan="2">
-                            <button type="submit" name="applyloan" class="btn btn-sm btn-warning float-right">Submit Application</button>
-                          </td>
-                          </form>
+                            <button type="submit" id="applyLoanButton" class="btn btn-sm btn-warning float-right">Submit Application</button>
+                            </td>
+                            
+                        </form>
                          
                           
                         </tr>
@@ -282,6 +298,59 @@ include 'includes/script.php';
             });
         });
     });
+</script>
+
+<script>
+$(document).ready(function () {
+    $('#applyLoanButton').on('click', function (e) {
+        e.preventDefault();
+
+        // Show the loading alert
+        Swal.fire({
+            title: 'Submitting Application...',
+            text: 'Please wait while we process your application.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading()
+            }
+        });
+
+        // Send AJAX request
+        $.ajax({
+            url: 'controllers/applyloan',  // Adjust the path if needed
+            method: 'POST',
+            data: $('#loanForm').serialize(),
+            dataType: 'json',
+            success: function (response) {
+                Swal.close();  // Close the loader
+
+                if (response.status === 'success') {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Application Successful',
+                        text: response.message,
+                    });
+                } else if (response.status === 'error') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Application Failed',
+                        text: response.message,
+                    });
+                }
+            },
+            error: function () {
+                Swal.close();  // Close the loader
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'An unexpected error occurred. Please try again later.',
+                });
+            }
+        });
+    });
+});
+
 </script>
 <?php
 include 'includes/footer.php';

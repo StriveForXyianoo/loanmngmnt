@@ -1,6 +1,13 @@
 <?php
 session_start();
 include '../controllers/connections.php';
+//check if the user is logged in
+$id = $_SESSION['id'];
+//select the user from the database
+$sql = "SELECT * FROM users WHERE ID = '$id'";
+$result = $conn->query($sql);
+$row = $result->fetch_assoc();
+
 ?>
 <!DOCTYPE html>
 <html>

@@ -40,9 +40,47 @@ include 'includes/sidebar.php';
                                 <th>Loan Type</th>
                                 <th>Amount</th>
                                 <th>Loan Status</th>
-                                <th>Action</th>
+                                <?php
+                                if($_SESSION['role'] == 'ADMIN'){
+                                  ?>
+                                  <th>Action</th>
+                                  <?php
+                                }
+                                ?>
                             </tr>
                         </thead>
+                        <?php
+                        $sql = "SELECT clientinformation.*,clientloan.*,clientloan.ID as LOID,loantype.* FROM clientinformation INNER JOIN clientloan ON clientinformation.ID = clientloan.CLIENTID INNER JOIN loantype ON clientloan.LOANID = loantype.ID";
+                        $result = $conn->query($sql);
+                        foreach($result as $row){
+                          if($row['MIDDLENAME']==''){
+                            $name = $row['FIRSTNAME'].' '.$row['LASTNAME'];
+                          }else{
+                            $name = $row['FIRSTNAME'].' '.$row['MIDDLENAME'].' '.$row['LASTNAME'];
+                          }
+                          ?>
+                          <tr>
+                            <td><?php echo $name?></td>
+                            <td><?php echo $row['DEPARTMENT']?></td>
+                            <td><?php echo $row['POSITION']?></td>
+                            <td><?php echo $row['LOANTYPE']?></td>
+                            <td><?php echo $row['LOANAMOUNT']?></td>
+                            <td><?php echo $row['STATUS']?></td>
+                            <?php
+                            if($_SESSION['role'] == 'ADMIN'){
+                              ?>
+                              <td>
+                                <a href="loan_delete.php?id=<?php echo $row['LOID']?>" class="btn btn-danger btn-sm">Update</a>
+                              </td>
+                              <?php
+                            }
+                            ?>
+
+                          </tr>
+
+                          <?php
+                        }
+                        ?>
                     </table>
                 </div>
             </div>
