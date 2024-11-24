@@ -338,15 +338,16 @@ $(document).ready(function () {
                     });
                 }
             },
-            error: function () {
-                Swal.close();  // Close the loader
-
+            error: function (xhr, status, error) {
+                Swal.close();
+                console.log(xhr.responseText); // Log server response
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
-                    text: 'An unexpected error occurred. Please try again later.',
+                    text: 'An unexpected error occurred. Details: ' + error,
                 });
             }
+
         });
     });
 });

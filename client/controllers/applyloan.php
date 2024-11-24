@@ -17,7 +17,7 @@ header('Content-Type: application/json');  // Set header to return JSON response
     $netpro = $_POST["netpro"];
 
     //check the status of the client
-    $sql = "SELECT * FROM clientinformation WHERE CLIENTID = '$clientID'";
+    $sql = "SELECT * FROM clientinformation WHERE ID = '$clientID'";
     $result = mysqli_query($conn, $sql);
     $row = mysqli_fetch_assoc($result);
     if($row['REGISTRATIONSTATUS'] == 'PENDING'){
@@ -61,7 +61,7 @@ header('Content-Type: application/json');  // Set header to return JSON response
     if ($result) {
         $response = [
             'status' => 'success',
-            'message' => 'Loan application submitted successfully.'
+            'message' => 'Redirecting to Face Recognition.'
         ];
     } else {
         $response = [
