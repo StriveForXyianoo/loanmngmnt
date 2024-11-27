@@ -1,11 +1,51 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+header('Content-Type: application/json'); // Ensure the response is in JSON format
+echo json_encode([
+    'status' => 'success',
+    'message' => 'Registration successful'
+]);
+
 include 'connections.php';
 session_start();
+
+
+
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 require '../vendor/autoload.php';
-if(isset($_POST['register'])){
+$requestBody = file_get_contents('php://input');
+$data = json_decode($requestBody, true);
+
+// Check if the form is submitted and face descriptor is sent
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Assuming you are handling the form data and file upload properly
+
+    // Retrieve the faceDescriptor from the POST data
+    if (isset($_POST['faceDescriptor'])) {
+        // Decode the face descriptor from JSON
+        $faceDescriptor = json_decode($_POST['faceDescriptor']);
+
+        // Store the faceDescriptor in a session variable
+        $_SESSION['faceDescriptor'] = $faceDescriptor;
+
+        // Log the face descriptor (for debugging purposes)
+        var_dump($faceDescriptor);
+        exit();
+    } else {
+        echo "Face descriptor not received.";
+    }
+} else {
+    // Handle the case where the form is not submitted properly
+    echo "Invalid request method.";
+}
+
+
+// Check if the form is submitted
+if (isset($_POST['register'])) {
+    // Sanitize user inputs
     $fname = mysqli_real_escape_string($conn, $_POST['fname']);
     $mname = mysqli_real_escape_string($conn, $_POST['mname']);
     $lname = mysqli_real_escape_string($conn, $_POST['lname']);
@@ -19,147 +59,112 @@ if(isset($_POST['register'])){
     $salary = mysqli_real_escape_string($conn, $_POST['salary']);
     $address = mysqli_real_escape_string($conn, $_POST['address']);
     $years = mysqli_real_escape_string($conn, $_POST['years']);
+
+    // Validate and process file uploads
     $documentphoto = $_FILES['documentphoto']['name'];
     $capture = $_FILES['capture']['name'];
 
-    //location of file
-    $target_doc = "../uploads/documents".basename($documentphoto);
-    $target_cap = "../uploads/images".basename($capture);
-    //check if email already exist
+    $docExt = pathinfo($documentphoto, PATHINFO_EXTENSION);
+    $capExt = pathinfo($capture, PATHINFO_EXTENSION);
+
+    $docName = uniqid() . "." . $docExt;
+    $capName = uniqid() . "." . $capExt;
+
+    $targetDoc = "../uploads/documents/" . $docName;
+    $targetCap = "../uploads/images/" . $capName;
+
+    if (!move_uploaded_file($_FILES['documentphoto']['tmp_name'], $targetDoc) || !move_uploaded_file($_FILES['capture']['tmp_name'], $targetCap)) {
+        error_log("Error uploading files");
+        $_SESSION['status'] = "error";
+        $_SESSION['message'] = "Failed to upload files";
+        header('Location: ../login');
+        exit();
+    }
+
+
+    // Encode face descriptor as JSON
+    $faceDescriptorJson = json_encode($_SESSION['faceDescriptor']);
+    if (json_last_error() !== JSON_ERROR_NONE) {
+        error_log("JSON encoding error: " . json_last_error_msg());
+        $_SESSION['status'] = "error";
+        $_SESSION['message'] = "Failed to encode face descriptor.";
+        header('Location: ../login');
+        exit();
+    }
+
+
+    // Check for duplicate email
     $sql = "SELECT * FROM clientinformation WHERE EMAIL = '$email'";
     $result = mysqli_query($conn, $sql);
-    if(mysqli_num_rows($result) > 0){
+    if (mysqli_num_rows($result) > 0) {
         $_SESSION['status'] = "error";
-        $_SESSION['message'] = "Email already Exists";
+        $_SESSION['message'] = "Email already exists";
         header('Location: ../login');
-    }else{
-       //generate 10 random characters
-        $docname = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
-        $capname = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
-        $cpp = $capname;
-        $password = password_hash($capname, PASSWORD_DEFAULT);
-        //extract the file extension
-        $docext = pathinfo($documentphoto, PATHINFO_EXTENSION);
-        $capext = pathinfo($capture, PATHINFO_EXTENSION);
+        exit();
+    }
 
-        //create new file name
-        $docname = $docname.".".$docext;
-        $capname = $capname.".".$capext;
+    // Generate random password
+    $passwordRaw = substr(str_shuffle("0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), 0, 10);
+    $password = password_hash($passwordRaw, PASSWORD_DEFAULT);
 
+    // Insert user data
+    $sql = "INSERT INTO clientinformation (FIRSTNAME, MIDDLENAME, LASTNAME, GENDER, BIRTHDATE, CIVILSTATUS, CONTACTNO, POSITION, SALARY, ADDRESS, YEARS, DEPARTMENT, EMAIL, PASSWORD, REGISTRATIONSTATUS) 
+            VALUES ('$fname', '$mname', '$lname', '$gender', '$bdate', '$civilstatus', '$phone', '$position', '$salary', '$address', '$years', '$department', '$email', '$password', 'PENDING')";
 
-        // Define full paths for moving the files
-        $target_doc = "../uploads/documents/".$docname;
-        $target_cap = "../uploads/images/".$capname;
+    if (mysqli_query($conn, $sql)) {
+        $last_id = mysqli_insert_id($conn);
 
-        // Move the files to the target directory with the new names
-        
+        // Insert files into clientimage table
+        $sql2 = "INSERT INTO clientimage (CLIENT_ID, TYPE, FILEP) VALUES ('$last_id', 'VALIDID', '$docName')";
+        $sql3 = "INSERT INTO clientimage (CLIENT_ID, TYPE, FILEP) VALUES ('$last_id', 'USERPIC', '$capName')";
+        if (mysqli_query($conn, $sql2) && mysqli_query($conn, $sql3)) {
+            // Insert face descriptor into clientface table
+            $sql4 = "INSERT INTO clientface (CLIENT_ID, FACE_DESCRIPTOR) VALUES ('$last_id', '$faceDescriptorJson')";
+            if (mysqli_query($conn, $sql4)) {
+                // Send email to user
+                $mail = new PHPMailer(true);
+                try {
+                    $mail->isSMTP();
+                    $mail->Host = 'smtp.gmail.com';
+                    $mail->SMTPAuth = true;
+                    $mail->Username = 'bcgempcsystem@gmail.com';
+                    $mail->Password = 'sywwedtovebnweel';
+                    $mail->SMTPSecure = 'tls';
+                    $mail->Port = 587;
 
+                    $mail->setFrom('bcgempcsystem@gmail.com', 'BCGE MPC System');
+                    $mail->addAddress($email);
+                    $mail->isHTML(true);
+                    $mail->Subject = "Important Message: BCGE MPC System";
+                    $mail->Body = "Hello $fname $lname,<br>Your password is $passwordRaw.<br>Please keep it confidential.";
 
-        if(move_uploaded_file($_FILES['documentphoto']['tmp_name'], $target_doc) && move_uploaded_file($_FILES['capture']['tmp_name'], $target_cap)){
-            $sql = "INSERT INTO `clientinformation`(`ID`, `FIRSTNAME`, `MIDDLENAME`, `LASTNAME`, `GENDER`, `BIRTHDATE`, `CIVILSTATUS`, `CONTACTNO`, `POSITION`, `SALARY`, `ADDRESS`, `YEARS`, `DEPARTMENT`, `EMAIL`,`PASSWORD`,`REGISTRATIONSTATUS`) VALUES (NULL, '$fname', '$mname', '$lname', '$gender', '$bdate', '$civilstatus', '$phone', '$position', '$salary', '$address', '$years', '$department', '$email', '$password','PENDING')";
-            $result = mysqli_query($conn, $sql);
-            if($result){
-                //get the last ID inserted
-                $last_id = mysqli_insert_id($conn);
-                $sql2 = "INSERT INTO `clientimage`(`ID`, `CLIENT_ID`, `TYPE`, `FILEP`) VALUES (NULL, '$last_id', 'VALIDID', '$docname')";
-                $result2 = mysqli_query($conn, $sql2);
-                $sql3 = "INSERT INTO `clientimage`(`ID`, `CLIENT_ID`, `TYPE`, `FILEP`) VALUES (NULL, '$last_id', 'USERPIC', '$capname')";
-                $result3 = mysqli_query($conn, $sql3);
-                if($result2 && $result3){
-                   
-                    $mail = new PHPMailer(true);
-                    try {
-                        //Server settings
-                        $mail->isSMTP();                                            // Send using SMTP
-                        $mail->Host       = 'smtp.gmail.com';                     // Set the SMTP server to send through
-                        $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
-                        $mail->Username   = 'bcgempcsystem@gmail.com';
-                        $mail->Password   = 'sywwedtovebnweel';                               // SMTP password
-                        $mail->SMTPSecure = 'tls';         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
-                        $mail->Port       = 587;                                    // TCP port to connect to
+                    $mail->send();
 
-                        $subject = "Important Message : BCGE MPC System";
-                        $body = "Hello $fname $lname, <br> Your password is $cpp <br> Please keep it confidential";
-                        //Recipients
-                        $mail->setFrom('bcgempcsystem@gmail.com', 'BCGE MPC System');
-                        $mail->addAddress($email);     // Add a recipient
-                        //send
-                        $mail->isHTML(true);
-                        $mail->Subject = $subject;
-                        $mail->Body    = $body;
-                        $mail->send();
-                        $_SESSION['status'] = "success";
-                        $_SESSION['message'] = "Successfully Registered! Password Sent to your email";
-                        
-                    } catch (\Throwable $e) {
-                       $_SESSION['status'] = "error";
-                       $_SESSION['message'] = "Sending Email Failed". $e;
-                       header('Location: ../login');
-                    }
-                    
-                }else{
-                        $_SESSION['status'] = "error";
-                       $_SESSION['message'] = "Failed to Register";
-                       header('Location: ../login');
-                    
+                    $_SESSION['status'] = "success";
+                    $_SESSION['message'] = "Successfully Registered! Password sent to your email.";
+                    header('Location: ../login');
+                } catch (Exception $e) {
+                    error_log("Mailer Error: " . $e->getMessage());
+                    $_SESSION['status'] = "error";
+                    $_SESSION['message'] = "Failed to send email.";
+                    header('Location: ../login');
                 }
-            }else{
+            } else {
+                error_log("Error inserting face descriptor: " . mysqli_error($conn));
                 $_SESSION['status'] = "error";
-                $_SESSION['message'] = "Failed to Register";
+                $_SESSION['message'] = "Failed to save face descriptor.";
                 header('Location: ../login');
-               
             }
-        }else{
+        } else {
+            error_log("Error inserting images: " . mysqli_error($conn));
             $_SESSION['status'] = "error";
-            $_SESSION['message'] = "Failed to Upload File";
+            $_SESSION['message'] = "Failed to insert user photos.";
             header('Location: ../login');
         }
-
-        
-
-
+    } else {
+        error_log("Error registering user: " . mysqli_error($conn));
+        $_SESSION['status'] = "error";
+        $_SESSION['message'] = "Failed to register user.";
+        header('Location: ../login');
     }
-    header('Location: ../login');
 }
-// // Replace with your actual API key and secret
-// $api_key = '_8ogNvyuQz22RwkuCQ_OF2dlbcaf-EtI';
-// $api_secret = 'GvalXGnbP_ynxkKIGYstPrh3U5DThX0L';
-// $face_token1 = 'c2fc0ad7c8da3af5a34b9c70ff764da0';
-// $face_token2 = 'ad248a809408b6320485ab4de13fe6a9';
-
-// // Initialize cURL
-// $ch = curl_init();
-
-// // Set the URL
-// curl_setopt($ch, CURLOPT_URL, "https://api-us.faceplusplus.com/facepp/v3/compare");
-
-// // Set the HTTP method to POST
-// curl_setopt($ch, CURLOPT_POST, true);
-
-// // Prepare the POST fields
-// $post_fields = [
-//     'api_key' => $api_key,
-//     'api_secret' => $api_secret,
-//     'face_token1' => $face_token1,
-//     'face_token2' => $face_token2,
-// ];
-
-// // Attach the POST fields
-// curl_setopt($ch, CURLOPT_POSTFIELDS, $post_fields);
-
-// // Set the option to return the response as a string instead of outputting it
-// curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-// // Execute the cURL request
-// $response = curl_exec($ch);
-
-// // Check for errors
-// if ($response === false) {
-//     echo 'cURL Error: ' . curl_error($ch);
-// } else {
-//     // Print the response
-//     echo 'Response: ' . $response;
-// }
-
-// // Close the cURL session
-// curl_close($ch);
